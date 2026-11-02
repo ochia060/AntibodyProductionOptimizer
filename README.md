@@ -43,7 +43,7 @@ between lagged input variables, and KNN regression allows prediction of future s
 ### 3. Model training and tuning
 Both models were evaluated using 4-fold cross validation using the soot mean squared error (RMSE) as the scoring metric.
 The model with the lowest mean cross validation RMSE is selected as the final model, with comparison results exported 
-to the "tables" folder./
+to the "tables" folder.\
 For polynomial regression, the polynomial degree was tested. For KNN regression, the number of neighbours as well as the 
 type of weighting (distance or uniform) was tested.
 
@@ -107,8 +107,8 @@ The initial glucose concentration influences the available energy at the beginni
 availability can promote cell growth and metabolism, contributing to biomass accumulation and antibody production. 
 Increasing the initial glucose concentration also increases culture cost, which limits the space-time profit achieved.\
 The initial glutamine concentration has similar effects to glucose concentration, where readily available glutamine
-may promote cell growth and metabolism, however higher concentrations increase the initial cost. Additionally, glutamine 
-consumption can result in accumulation of ammonia as a metabolic byproduct, which could have negative effects on culture
+may promote cell growth and metabolism, however higher concentrations increase the initial cost. Additionally, excess
+glutamine can result in accumulation of ammonia as a metabolic byproduct, which could have negative effects on culture
 growth in the long term.\
 The initial VCD determines the number of viable cells at the beginning of the batch process. A higher initial VCD allows 
 the culture to begin producing mAb with a larger cell population, however this increases the culture cost.\
@@ -117,6 +117,7 @@ on the final mAb concentration, and the culture cost depends on the initial [glu
 profit depends on both economic performance and harvesting time
 
 ### Recommended Initial Operating Conditions
+The recommended batch from the selected 30 batches was batch 319.\
 The optimal initial operating conditions are as follows:
 |Initial Condition     |Optimal Value|
 |----------------------|-------------|
