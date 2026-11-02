@@ -118,15 +118,16 @@ profit depends on both economic performance and harvesting time
 
 ### Recommended Initial Operating Conditions
 The optimal initial operating conditions are as follows:
-|Recommended Initial Conditions      |
+|Initial Condition     |Optimal Value|
 |----------------------|-------------|
 |Glucose [mM]          |15.000       |
 |Glutamine [mM]        |2.000        |
 |Initial VCD [cells/mL]|400000.000   |
 |Harvest Time [d]      |4.667        |
 
+
 The estimated culture cost, culture value, space time profit, and space time yield are as follows:
-|Summary of Estimated Value                                      |
+|Parameter                                |Value                 |
 |-----------------------------------------|----------------------|
 |Culture Value Mean [$/L]                 |799.61761             |
 |Culture Value 95% Prediction Interval    |[586.02441 ; 993.03079|
