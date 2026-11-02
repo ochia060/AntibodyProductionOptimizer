@@ -522,7 +522,7 @@ class AntibodyOptimizer:
             self.optimization_results["Batch ID"],
             self.optimization_results["Space-Time Profit Mean [$/L/d]"],
             marker="o",
-            color="blue"
+            color="tab:blue"
         )
 
         plt.xlabel("Batch ID")
