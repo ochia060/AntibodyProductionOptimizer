@@ -146,7 +146,7 @@ A table containing the optimization results (found in "tables"/"optimization_res
 for culture value, space time profit, and space time yield for each of the 30 batches of initial operating conditions.
 The combination of [glucose], [glutamine], and VCD which results in the largest space time profit from this data file
 is chosen as the recommended conditions.\
-A graphical representation of profit vs batch ID can be seen below:
+A graphical representation of space time profit vs batch ID can be seen below:
 
 In this graph, the relationship between space time profit and batch ID is shown. Each batch has multiple points due to 
 different harvest times observed.\
