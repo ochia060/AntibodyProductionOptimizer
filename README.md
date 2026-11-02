@@ -118,7 +118,7 @@ profit depends on both economic performance and harvesting time
 
 ### Recommended Initial Operating Conditions
 The optimal initial operating conditions are as follows:
-|Recommended Initial Conditions      |
+|Initial Condition     |Optimal Value|
 |----------------------|-------------|
 |Glucose [mM]          |15.000       |
 |Glutamine [mM]        |2.000        |
@@ -126,7 +126,7 @@ The optimal initial operating conditions are as follows:
 |Harvest Time [d]      |4.667        |
 
 The estimated culture cost, culture value, space time profit, and space time yield are as follows:
-|Summary of Estimated Value                                      |
+|Parameter                                |Value                 |
 |-----------------------------------------|----------------------|
 |Culture Value Mean [$/L]                 |799.61761             |
 |Culture Value 95% Prediction Interval    |[586.02441 ; 993.03079|
@@ -141,6 +141,9 @@ A table containing the optimization results (found in "tables"/"optimization_res
 for culture value, space time profit, and space time yield for each of the 30 batches of initial operating conditions.
 The combination of [glucose], [glutamine], and VCD which results in the largest space time profit from this data file
 is chosen as the recommended conditions.\
+The chosen recommended harvest time van be visualised graphically below:
+<img width="3200" height="2400" alt="profit_vs_harvest_time" src="https://github.com/user-attachments/assets/8421efb3-09b1-4a14-9c50-2cf24db0b18d" />
+The maximum point on this graph represents the optimal harvest time to achieve the highest profit.
 The recommended harvest time was found in a similar manner, where the time which resulted in teh largest profit was chosen
 as the recommended time. This can be seen graphically below:
 
