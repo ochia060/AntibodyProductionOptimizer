@@ -1,14 +1,19 @@
-# =====================================================================
-# MAIN PROGRAM
-# Your code starts here. This is the file that will be run.
-# =====================================================================
 
-import src.functions as sf  # This allows you to access functions from functions.py using sf.function_name()
-from src.classes import Batch  # This allows you to import individual Classes from classes.py
-from src.constants import *  # This imports all constants from constants.py
+from src.classes import AntibodyOptimizer
 
-ph_optimal = sf.calculate_average(PH_LIMITS)
-temperature_optimal = sf.calculate_average(TEMPERATURE_LIMITS)
+optimizer = AntibodyOptimizer(filepath="datasets/initial_conditions.csv")
 
-batch = Batch(batch_id=1, ph_opt=ph_optimal, temperature_opt=temperature_optimal)
-batch.display_info()
+# load the 30 selected batch runs
+optimizer.load_data(number_of_batches=30)
+
+# train and compare the regression models
+comparison = optimizer.train_and_compare()
+
+# optimize operating conditions and harvest time
+optimizer.optimize(n_simulations=200)
+
+# display the recommended conditions
+optimizer.print_summary()
+
+print("\nMODEL COMPARISON")
+print(comparison.round(4).to_string(index=False))

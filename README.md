@@ -1,73 +1,151 @@
-# Assignment 3: Optimizing Monoclonal Antibody Production
+# Monoclonal Antibody Production Optimizer
+A python based tool that optimizes antibody production based on initial conditions and harvest times
+that maximize space-time profit. Polynomial regression and KNN regression models are trained using time series data
+to predict culture performance and estimate uncertainty in outcomes.
 
-## Background
+## Highlights
+- Developed an optimization program for mAb production
+- Implemented polynomial NVAR and KNN regression models
+- Optimized model hyperparameters using grid search cross validation
+- Simulated batch trajectories using residual based uncertainty estimation
+- Identified operating conditions that maximize predicted space-time profit
 
-- Monoclonal antibodies (mAbs) are antibodies produced from a uniquely cloned white blood cell and have been used in
-  emerging cancer treatments to mark cancer cells for destruction by the immune system.
+## Environment
+- Python 3.14.7
+- matplotlib 3.11.0
+- numpy 2.5.2
+- pandas 3.0.5
+- sklearn 1.9.0
 
-- Your goal is to maximize the space-time profit of an mAb production process.
+## Code Design
+The major stages when main.py is executed are as follows:
+1. data loading and batch selection
+2. lagged state generation and model building
+3. model training and tuning
+4. prediction and uncertainty estimation
+5. operating conditions and harvest time optimization
 
-- You have the resources to conduct 30 batch runs to collect data that you can use to solve the problem.
-    - I.e., You can download 30 batch run datasets of your choice from the [`provided_files`](provided_files) directory.
+### 1. Data loading and batch selection
+The program begins by loading data contained in the "initial_conditions.csv" file, removing duplicate combinations of 
+the initial conditions, and selecting 30 batch runs that are evenly spaced throughout the remaining data. 
+The corresponding time series data for each selected batch was manually moved to the "datasets" folder for later use.\
+The selected batch data is combined into a single data frame sorted by batch dentification number and time.
 
-- The 1 L bioreactors used require 1 day of downtime between batch runs.
+### 2. Lagged state generation and model building
+A nonlinear vector autoregressive (NVAR) model is used to predict the state of the cell culture, where previous time 
+series data observations are used to predict the next state. There are 7 variables included in this: glucose concentration,
+lactate concentration, ammonia concentration, viable cell density (VCD), total cell density (TCD), and monoclonal antibody (mAb) concentration.\
+For each batch, the time series measurements are arranged into lagged input vectors containing the most recent observation
+and the one before it. The corresponding current measurements become prediction targets for the model.\
+Two NVAR models, polynomial and KNN, were evaluated. Polynomial regression allows nonlinear relations and interactions
+between lagged input variables, and KNN regression allows prediction of future states based on close observations.
 
-- The initial glucose and glutamine concentrations and initial viable cell density (VCD) for each batch are provided
-  in [`initial_conditions.csv`](provided_files/initial_conditions.csv).
+### 3. Model training and tuning
+Both models were evaluated using 4-fold cross validation using the soot mean squared error (RMSE) as the scoring metric.
+The model with the lowest mean cross validation RMSE is selected as the final model, with comparison results exported 
+to the "tables" folder./
+For polynomial regression, the polynomial degree was tested. For KNN regression, the number of neighbours as well as the 
+type of weighting (distance or uniform) was tested.
 
-- The initial lactate, ammonia, and mAb concentrations in the cell culture are zero.
+### 4. Prediction and uncertainty estimation
+After selecting the best model, residuals are calculated by comparing the model's predictions to the actual observations.
+Prediction begins with an initial state from the selected batch glucose concentration, glutamine concentration, and VCD. 
+The initial lactate concentration, ammonia concentration, and mAb concentration are set to 0, and the initial TCD is
+assumed to be equal to the VCD.\
+The model predicts the next culture state using the previous 2 observations, and repeats this process until the desired
+number of steps has been completed. To account for prediction uncertainty, a residual value previously calculated is 
+selected and added to the predicted state.\
+Multiple trajectories are generated for each set of initial conditions, producing distributions which are used to estimate
+approximate 95% prediction intervals for the economic and productivity metrics.
 
-- The initial total cell density (TCD) is equal to the initial VCD.
+### 5. Operating conditions and harvest time optimization
+The predicted performance of each initial condition at every harvest time is evaluated by calculation of the culture 
+cost, culture value, and culture profit, and then the space time profit, and space time yield. For each combination
+of initial conditions and harvest time, the mean, 2.5 percentile, and 97.5 percentile of the calculated culture value, 
+space time profit, and space time yield are calculated. The percentiles provide an approximate 95% prediction interval.\
+All combinations are evaluated, and the operating conditions and harvest time associated with the highest predicted mean
+space time profit are identified.
 
-- The economics of the production are as follows:
-    - **Cell culture cost [\$/L]** = 10 $\times$ (Initial Glucose [mM]) + 20 $\times$ (Initial Glutamine [mM]) +
-      0.0005 $\times$ (Initial VCD [cells/mL])
-    - **Cell culture value [\$/L]** = 1000 $\times$ (mAb [mg/L])
-    - **Profit [\$/L]** = (Cell culture value [\$/L]) - (Cell culture cost [\$/L])
-    - **Space-time profit [\$ / (L $\cdot$ d)]** = (Profit [\$/L]) / ((Harvest time [d]) + (Downtime [d]))
-    - **Space-time yield [mg / (L $\cdot$ d)]** = (mAb [mg/L]) / ((Harvest time [d]) + (Downtime [d]))
+## Analysis
+### Selection of Initial Conditions 
+The initial variables focused on were [glucose], [glutamine], and VCD. Duplicate combinations of these variables were 
+removed from the available data, and the remaining combinations were sorted by their initial conditions.
+The initial conditions selected to conduct the 30 batch runs were then chosen by equal spacing of data.\ 
+This method of batch selection ensures a range of different operating conditions without replicate data,
+and also allows reproducibility.
 
-## Task
+### Model Architecture
+Two nonlinear regression models, polynomial regression and k-nearest neighbours (KNN) regression were implemented and evaluated to
+identify a suitable model for prediction of future culture states. A nonlinear autoregressive model was chosen due to 
+the time dependence of the culture variables and possible nonlinear relations.\
+Polynomial regression was chosen due to its capability of representing non-linear relationships between variables while
+KNN regression was chosen due to its prediction of target values based on observations with similar input features.\
+The model hyperparameters were optimized using grid search with a 4-fold cross validation. The resulting scores give a 
+better estimation of model performance in comparison to a standard train-validation split.\
+For polynomial regression, polynomial degrees of 2, 3, 4, and 5 were tested. 
+For KNN regression, neighbour counts of 2, 3, 3, amd 5 were tested, with uniform and distance-based weighting.
 
-- Your task for this assignment is to determine the initial glucose concentration, initial glutamine concentration,
-  initial VCD and harvest time that will maximize the space-time profit of an mAb production process.
+### Model Comparison and Selection
+Models were compared using a 4-fold grid search cross validation. The root mean squared error (RMSE) was used as the 
+scoring metric, where a lower value indicates a closer prediction to the actual culture state. Model comparison produced
+the following results:
+|Model          |Best Parameters                   |Mean CV RMSE|
+|---------------|----------------------------------|------------|
+|Polynomial NVAR|Polynomial Degree = 2             |28633.63233 |
+|KNN NVAR       |Neighbours = 5, Weights = distance|117183.1283 |
 
-- In your GitHub repository, add a description in the "About" section. (10 - 20 words)
+Polynomial NVAR resulted in a significantly lower CV RMSE tha KNN NVAR, therefore polynomial NVAR with a degree of 2 
+was selected as the final model.\
+The results suggest that a polynomial model was more representative of the relationship between the lagged variables and 
+culture states. An advantage of polynomial regression is that it is capable of representing nonlinear trends while 
+remaining relatively simple to evaluate. At higher degrees, however, polynomial regression can increase model complexity
+and may result in overfitting. 
 
-- You must also include a `README.md` file which has the following structure:
-    - **Project Name**
-        - Heading 1
-        - 40 - 80 words
-        - What does your code do?
-        - What problem does it solve?
-        - Replace heading with your own project name.
-        - The project name should resemble your repository name, but it does not need to be identical.
-    - **Highlights**
-        - Heading 2
-        - Include 3 - 5 bullet points in an unordered list.
-        - Begin each bullet point with an action verb.
-            - E.g., Analyzed, Built, Designed, Developed, Evaluated, Extracted, Identified, Optimized, etc.
-        - Consider what skills you would want a potential employer to know about.
-    - **Environment**
-        - Heading 2
-        - List the Python version and all libraries used in the project, including version numbers.
-        - Use an unordered list.
-        - List Python first, followed by the libraries in alphabetical order.
-        - Only include libraries that were actually used in the project. Do not include packages that are installed in
-          your environment but were not used.
-    - **Code Design**
-        - Heading 2
-        - 500 - 1000 words
-        - Describe the workflow of the program after `main.py` is executed.
-        - Explain the purpose of each major stage of the workflow and why it exists.
-        - Examples of major stages include (but are not limited to) data loading, preprocessing, feature engineering,
-          model training, etc.
-        - Do not simply list the functions and classes that are called.
-        - Organize this section using Heading 3 subsections.
-        - For each subsection, describe:
-            - What does this stage of the workflow do?
-            - Why is this stage necessary?
-            - How does this stage contribute to the overall workflow?
+
+### Influence of Initial Conditions on Culture Performance
+The initial glucose concentration influences the available energy at the beginning of the culture process. Glucose 
+availability can promote cell growth and metabolism, contributing to biomass accumulation and antibody production. 
+Increasing the initial glucose concentration also increases culture cost, which limits the space-time profit achieved.\
+The initial glutamine concentration has similar effects to glucose concentration, where readily available glutamine
+may promote cell growth and metabolism, however higher concentrations increase the initial cost. Additionally, glutamine 
+consumption can result in accumulation of ammonia as a metabolic byproduct, which could have negative effects on culture
+growth in the long term.\
+The initial VCD determines the number of viable cells at the beginning of the batch process. A higher initial VCD allows 
+the culture to begin producing mAb with a larger cell population, however this increases the culture cost.\
+The combined effect of these variables determines the overall economic performance of the culture. Culture value depends 
+on the final mAb concentration, and the culture cost depends on the initial [glucose], [glutamine], and VCD. Space time 
+profit depends on both economic performance and harvesting time
+
+### Recommended Initial Operating Conditions
+The optimal initial operating conditions are as follows:
+|Recommended Initial Conditions      |
+|----------------------|-------------|
+|Glucose [mM]          |15.000       |
+|Glutamine [mM]        |2.000        |
+|Initial VCD [cells/mL]|400000.000   |
+|Harvest Time [d]      |4.667        |
+
+The estimated culture cost, culture value, space time profit, and space time yield are as follows:
+|Summary of Estimated Value                                      |
+|-----------------------------------------|----------------------|
+|Culture Value Mean [$/L]                 |799.61761             |
+|Culture Value 95% Prediction Interval    |[586.02441 ; 993.03079|
+|Space-Time Profit Mean [$/L/d]           |72.28546              |
+|Space-Time Profit 95% Prediction Interval|[34.59254 ; 106.41720]|
+|Space-Time Yield Mean [mg/L/d]           |0.14111               |
+|Space-Time Yield 95% Prediction Interval |[0.10342 ; 0.17524]   |
+
+### Validation of Results
+The recommended initial operating conditions are those which resulted in the maximum predicted mean space time profit.
+A table containing the optimization results (found in "tables"/"optimization_results.csv") contains the estimated values
+for culture value, space time profit, and space time yield for each of the 30 batches of initial operating conditions.
+The combination of [glucose], [glutamine], and VCD which results in the largest space time profit from this data file
+is chosen as the recommended conditions.\
+The chosen recommended harvest time van be visualised graphically below:
+
+The maximum point on this graph represents the optimal harvest time to achieve the highest profit.
+
+
     - **Analysis**
         - Heading 2
         - 1000 - 2000 words
@@ -89,86 +167,3 @@
             - estimated mAb space-time yield [mg / (L $\cdot$ d)] with 95% prediction intervals.
         - Provide evidence supporting your conclusions. Evidence may include exported CSV tables, PNG figures, or both.
         - Organize this section using Heading 3 subsections.
-
-- Reminders:
-    - You are primarily being evaluated on your ability to justify your decisions rather than arriving at the optimal
-      solution.
-    - Figures and tables do not count towards the word count.
-    - You should present your repository like a portfolio project rather than an assignment for a course. I would
-      encourage you not to make any references to the course (e.g., course code, course name, assignment number, student
-      ID, etc.).
-    - You can find a guide to the major Markdown syntax elements here: https://www.markdownguide.org/cheat-sheet/
-    - You can use this website to convert CSV to Markdown, if needed: https://convertcsv.com/csv-to-markdown.htm
-
-## Setting up your assignment
-
-1. Download the [repository template](https://github.com/Shawn-Chahal/chg4360c-repo-template) for the course.
-
-2. Add [`initial_conditions.csv`](provided_files/initial_conditions.csv) to the `datasets` directory in your local
-   repository.
-
-3. Add 30 `batch_####.csv` files of your choice from the [`provided_files`](provided_files) directory to the `datasets`
-   directory in your local repository. It will likely be easiest to download the entire course repository and then move
-   the files you want on your computer.
-
-4. When you open the project in PyCharm, make sure that you have the course environment selected in the bottom-right
-   corner.
-
-5. Make sure to replace any placeholder files from the repository template with the appropriate content.
-
-6. Delete any placeholder files that you are not using.
-
-7. Push the project to a new GitHub repository.
-
-## Provided files
-
-[`initial_conditions.csv`](provided_files/initial_conditions.csv)
-
-- This file contains the initial conditions for simulated mAb production time series with the following columns:
-    - `Batch ID`: Batch run identifier.
-    - `Glucose [mM]`: Initial glucose concentration in units of mM.
-    - `Glutamine [mM]`: Initial glutamine concentration in units of mM.
-    - `VCD [cells/mL]`: Initial viable cell density in units of cells/mL.
-
-[`batch_####.csv`]
-
-- There are 1029 batch run datasets spanning 7 initial glucose concentrations, 7 initial glutamine concentrations, 7
-  initial VCD concentrations, and 3 replicates of each (7 $\times$ 7 $\times$ 7 $\times$ 3 = 1029).
-- Each file contains the time series for a simulated mAb production with the following columns:
-    - `Time [h]`: Time point of the measurement in units of h.
-    - `Glucose [mM]`: Glucose concentration in units of mM.
-    - `Glutamine [mM]`: Glutamine concentration in units of mM.
-    - `Lactate [mM]`: Lactate concentration in units of mM.
-    - `Ammonia [mM]`: Ammonia concentration in units of mM.
-    - `VCD [cells/mL]`: Viable cell density in units of cells/mL.
-    - `TCD [cells/mL]`: Total cell density in units of cells/mL.
-    - `mAb [mg/L]`: Monoclonal antibody concentration in units of mg/L.
-
-## Expected Program Behavior
-
-- Your `main.py` script will be run to test your code in the course environment.
-
-- There is no set expectation of what your code should print to terminal or export as tables or figures.
-
-- You are free to use the libraries found in the course environment and code from the course repository as needed.
-
-## Submission Requirements
-
-- Submit a link to your GitHub repository through the Brightspace assignment page.
-
-- The timestamp of your submission will be whichever is latest between the timestamp of the last commit in your GitHub
-  repository and the timestamp of your Brightspace submission.
-
-## Rubric
-
-| Component         | Weight |
-|-------------------|--------|
-| Code Execution    | 15%    |
-| GitHub Repository | 15%    |
-| Project Name      | 5%     |
-| Highlights        | 5%     |
-| Environment       | 5%     |
-| Code Design       | 20%    |
-| Analysis          | 35%    |
-
-

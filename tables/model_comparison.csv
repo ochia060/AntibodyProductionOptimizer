@@ -1,0 +1,3 @@
+Model,Best Parameters,Mean CV RMSE
+Polynomial NVAR,Polynomial Degree = 2,28633.63233
+KNN NVAR,"Neighbours = 5, Weights = distance",117183.12834
