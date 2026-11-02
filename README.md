@@ -141,29 +141,10 @@ A table containing the optimization results (found in "tables"/"optimization_res
 for culture value, space time profit, and space time yield for each of the 30 batches of initial operating conditions.
 The combination of [glucose], [glutamine], and VCD which results in the largest space time profit from this data file
 is chosen as the recommended conditions.\
-The chosen recommended harvest time van be visualised graphically below:
+The recommended harvest time was found in a similar manner, where the time which resulted in teh largest profit was chosen
+as the recommended time. This can be seen graphically below:
 
-The maximum point on this graph represents the optimal harvest time to achieve the highest profit.
+This graph demonstrates the relationship between harvest time and profit, allowing graphical determination of the optimal
+harvest time. The harvest time corresponding to the point with most profit was chosen as the recommended harvest time.
 
 
-    - **Analysis**
-        - Heading 2
-        - 1000 - 2000 words
-        - Justify your choice of initial conditions you selected to conduct your 30 batch runs.
-        - Justify your choice of model architecture, including the regression algorithm and hyperparameters.
-        - Compare your selected model against at least one other reasonable alternative.
-        - Discuss the advantages and limitations of your model.
-        - Describe how the initial conditions of the cell culture influence the space-time profit and space-time yield
-          of mAb production.
-        - Describe the initial conditions and harvest time that maximizes the space-time profit of mAb production.
-          Specifically, you should report your:
-            - recommended initial glucose concentration [mM].
-            - recommended initial glutamine concentration [mM].
-            - recommended initial viable cell density [cells/mL].
-            - recommended harvest time [d] (i.e., when to stop the production).
-            - estimated cell culture cost [$/L].
-            - estimated cell culture value at harvest [$/L] with 95% prediction intervals.
-            - estimated space-time profit [\$ / (L $\cdot$ d)] with 95% prediction intervals.
-            - estimated mAb space-time yield [mg / (L $\cdot$ d)] with 95% prediction intervals.
-        - Provide evidence supporting your conclusions. Evidence may include exported CSV tables, PNG figures, or both.
-        - Organize this section using Heading 3 subsections.

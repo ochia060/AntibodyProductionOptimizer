@@ -373,9 +373,9 @@ class AntibodyOptimizer:
                 glutamine,
                 0,       # initial lactate
                 0,       # initial ammonia
-                vcd,     # initial viable cell density
-                vcd,     # initial total cell density
-                0        # initial antibody conc.
+                vcd,     # initial vcd
+                vcd,     # initial tcd (= initial vcd)
+                0        # initial mAb conc.
             ]
 
             # perform simulations for initial conditions
@@ -425,7 +425,9 @@ class AntibodyOptimizer:
                     "Initial VCD [cells/mL]": vcd,
                     "Harvest Time [d]": harvest_time_days,
 
-                    #calculate the central 95% prediction interval
+                    #calculate the central 95% prediction intervals
+                    # lower bound = 2.5%
+                    # upper bound = 97.5%
                     "Culture Value Mean [$/L]":
                         np.mean(culture_values),
 
