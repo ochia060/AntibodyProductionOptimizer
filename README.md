@@ -149,5 +149,5 @@ as the recommended time. This can be seen graphically below:
 
 This graph demonstrates the relationship between harvest time and profit, allowing graphical determination of the optimal
 harvest time. The harvest time corresponding to the point with most profit was chosen as the recommended harvest time.
-
+cc
 
