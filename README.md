@@ -142,28 +142,5 @@ for culture value, space time profit, and space time yield for each of the 30 ba
 The combination of [glucose], [glutamine], and VCD which results in the largest space time profit from this data file
 is chosen as the recommended conditions.\
 The chosen recommended harvest time van be visualised graphically below:
-
+<img width="3200" height="2400" alt="profit_vs_harvest_time" src="https://github.com/user-attachments/assets/8421efb3-09b1-4a14-9c50-2cf24db0b18d" />
 The maximum point on this graph represents the optimal harvest time to achieve the highest profit.
-
-
-    - **Analysis**
-        - Heading 2
-        - 1000 - 2000 words
-        - Justify your choice of initial conditions you selected to conduct your 30 batch runs.
-        - Justify your choice of model architecture, including the regression algorithm and hyperparameters.
-        - Compare your selected model against at least one other reasonable alternative.
-        - Discuss the advantages and limitations of your model.
-        - Describe how the initial conditions of the cell culture influence the space-time profit and space-time yield
-          of mAb production.
-        - Describe the initial conditions and harvest time that maximizes the space-time profit of mAb production.
-          Specifically, you should report your:
-            - recommended initial glucose concentration [mM].
-            - recommended initial glutamine concentration [mM].
-            - recommended initial viable cell density [cells/mL].
-            - recommended harvest time [d] (i.e., when to stop the production).
-            - estimated cell culture cost [$/L].
-            - estimated cell culture value at harvest [$/L] with 95% prediction intervals.
-            - estimated space-time profit [\$ / (L $\cdot$ d)] with 95% prediction intervals.
-            - estimated mAb space-time yield [mg / (L $\cdot$ d)] with 95% prediction intervals.
-        - Provide evidence supporting your conclusions. Evidence may include exported CSV tables, PNG figures, or both.
-        - Organize this section using Heading 3 subsections.
