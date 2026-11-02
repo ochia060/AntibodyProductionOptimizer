@@ -127,14 +127,14 @@ The optimal initial operating conditions are as follows:
 |Harvest Time [d]      |4.667        |
 
 The estimated culture cost, culture value, space time profit, and space time yield are as follows:
-|Parameter                                |Value                 |
-|-----------------------------------------|----------------------|
-|Culture Value Mean [$/L]                 |799.61761             |
-|Culture Value 95% Prediction Interval    |[586.02441 ; 993.03079|
-|Space-Time Profit Mean [$/L/d]           |72.28546              |
-|Space-Time Profit 95% Prediction Interval|[34.59254 ; 106.41720]|
-|Space-Time Yield Mean [mg/L/d]           |0.14111               |
-|Space-Time Yield 95% Prediction Interval |[0.10342 ; 0.17524]   |
+|Parameter                                |Value                  |
+|-----------------------------------------|-----------------------|
+|Culture Value Mean [$/L]                 |809.01218              |
+|Culture Value 95% Prediction Interval    |[641.13654 ; 994.08961]|
+|Space-Time Profit Mean [$/L/d]           |73.94333               |
+|Space-Time Profit 95% Prediction Interval|[44.31821 ; 106.60405] |
+|Space-Time Yield Mean [mg/L/d]           |0.14277                |
+|Space-Time Yield 95% Prediction Interval |[0.11314 ; 0.17543]    |
 
 It is important to note that these results are subject to minor variation between runs of the program. Variation is 
 due to simulated variance by adding a random residual value for each predicted state, however the difference in results
@@ -147,7 +147,7 @@ for culture value, space time profit, and space time yield for each of the 30 ba
 The combination of [glucose], [glutamine], and VCD which results in the largest space time profit from this data file
 is chosen as the recommended conditions.\
 A graphical representation of space time profit vs batch ID can be seen below:
-<img width="3200" height="2400" alt="profit_vs_batch_ID" src="https://github.com/user-attachments/assets/466fe237-ce92-420e-8638-7fc40a0e69f0" />
+<img width="3200" height="2400" alt="profit_vs_batch_ID" src="https://github.com/user-attachments/assets/4d76b52c-c7f0-410f-a1c4-8931eaa313f2" />
 In this graph, the relationship between space time profit and batch ID is shown. Each batch has multiple points due to 
 different harvest times observed.\
 The recommended harvest time was found in a similar manner, where the time which resulted in teh largest profit was chosen
