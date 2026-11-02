@@ -147,7 +147,7 @@ for culture value, space time profit, and space time yield for each of the 30 ba
 The combination of [glucose], [glutamine], and VCD which results in the largest space time profit from this data file
 is chosen as the recommended conditions.\
 A graphical representation of space time profit vs batch ID can be seen below:
-
+<img width="3200" height="2400" alt="profit_vs_batch_ID" src="https://github.com/user-attachments/assets/466fe237-ce92-420e-8638-7fc40a0e69f0" />
 In this graph, the relationship between space time profit and batch ID is shown. Each batch has multiple points due to 
 different harvest times observed.\
 The recommended harvest time was found in a similar manner, where the time which resulted in teh largest profit was chosen
