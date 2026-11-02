@@ -486,6 +486,10 @@ class AntibodyOptimizer:
             float_format="%.5f"
         )
 
+        self.plot_profit_vs_harvest()
+        self.plot_profit_vs_batch()
+
+    def plot_profit_vs_harvest(self):
         # plot mean space time profit vs harvest time
         plt.figure(figsize=(8, 6))
 
@@ -509,7 +513,31 @@ class AntibodyOptimizer:
         )
 
         plt.close()
+        return self.optimization_results
 
+    def plot_profit_vs_batch(self):
+        plt.figure(figsize=(8, 6))
+
+        plt.scatter(
+            self.optimization_results["Batch ID"],
+            self.optimization_results["Space-Time Profit Mean [$/L/d]"],
+            marker="o",
+            color="tab:blue"
+        )
+
+        plt.xlabel("Batch ID")
+        plt.ylabel("Mean Space-Time Profit [$/L/d]")
+        plt.title("Space-Time Profit vs. Batch ID")
+        plt.tight_layout()
+
+        plt.savefig(os.path.join(
+            "figures",
+            "profit_vs_batch_ID.png"
+        ),
+            dpi=400
+        )
+
+        plt.close()
         return self.optimization_results
 
     def print_summary(self):

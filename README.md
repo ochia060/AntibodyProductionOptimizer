@@ -54,7 +54,7 @@ The initial lactate concentration, ammonia concentration, and mAb concentration 
 assumed to be equal to the VCD.\
 The model predicts the next culture state using the previous 2 observations, and repeats this process until the desired
 number of steps has been completed. To account for prediction uncertainty, a residual value previously calculated is 
-selected and added to the predicted state.\
+randomly selected and added to the predicted state.\
 Multiple trajectories are generated for each set of initial conditions, producing distributions which are used to estimate
 approximate 95% prediction intervals for the economic and productivity metrics.
 
@@ -136,12 +136,20 @@ The estimated culture cost, culture value, space time profit, and space time yie
 |Space-Time Yield Mean [mg/L/d]           |0.14111               |
 |Space-Time Yield 95% Prediction Interval |[0.10342 ; 0.17524]   |
 
+It is important to note that these results are subject to minor variation between runs of the program. Variation is 
+due to simulated variance by adding a random residual value for each predicted state, however the difference in results
+is relatively minor.
+
 ### Validation of Results
 The recommended initial operating conditions are those which resulted in the maximum predicted mean space time profit.
 A table containing the optimization results (found in "tables"/"optimization_results.csv") contains the estimated values
 for culture value, space time profit, and space time yield for each of the 30 batches of initial operating conditions.
 The combination of [glucose], [glutamine], and VCD which results in the largest space time profit from this data file
 is chosen as the recommended conditions.\
+A graphical representation of profit vs batch ID can be seen below:
+
+In this graph, the relationship between space time profit and batch ID is shown. Each batch has multiple points due to 
+different harvest times observed.\
 The recommended harvest time was found in a similar manner, where the time which resulted in teh largest profit was chosen
 as the recommended time. This can be seen graphically below:
 <img width="3200" height="2400" alt="profit_vs_harvest_time" src="https://github.com/user-attachments/assets/8421efb3-09b1-4a14-9c50-2cf24db0b18d" />
